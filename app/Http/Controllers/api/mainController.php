@@ -41,9 +41,19 @@ class mainController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function piutang()
     {
-        // 
+        try {
+            $listPiutang = DB::select(" SELECT fs_kd_piutang,fs_kd_jurnal_buat,fn_piutang,fn_sisa,fd_tgl_piutang,fs_kd_iii,fd_tgl_void,fs_kd_mr
+                                from t_bp_piutang_hdr where fs_kd_III='JAMINAN000' and fn_sisa !='0' and FD_TGL_PIUTANG > '2023-05'
+                                and FD_TGL_VOID='3000-01-01' ");
+            return response()->json($listPiutang, Response::HTTP_OK);
+        } catch (QueryException $err) {
+            $error = [
+                'error' => $err->getMessage()
+            ];
+            return response()->json($error, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
